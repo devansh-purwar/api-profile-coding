@@ -167,6 +167,7 @@ class UserData:
             return user_details_response
 
         full, partial = problems_solved_get()
+        rating = re.findall(r'\d+', rating)[0]
         details = {'status': 'Success', 'rating': int(rating), 'stars': stars, 'highest_rating': int(highest_rating),
                    'global_rank': global_rank, 'country_rank': country_rank,
                    'user_details': user_details_get(), 'contests': contests_details_get(),
