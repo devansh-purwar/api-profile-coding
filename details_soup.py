@@ -465,11 +465,9 @@ class UserData:
             hard_problems_submitted = 0
 
             ranking = get_safe_nested_key(['data', 'matchedUser', 'profile', 'ranking'], response)
-            if ranking > 100000:
-                ranking = '~100000'
-
             reputation = get_safe_nested_key(['data', 'matchedUser', 'profile', 'reputation'], response)
-
+            star = get_safe_nested_key(['data', 'matchedUser', 'profile', 'starRating'], response)
+            avatar = get_safe_nested_key(['data', 'matchedUser', 'profile', 'userAvatar'], response)
             total_questions_stats = get_safe_nested_key(['data', 'allQuestionsCount'], response)
             for item in total_questions_stats:
                 if item['difficulty'] == "Easy":
@@ -547,7 +545,9 @@ class UserData:
                 'contribution_points': str(contribution_points),
                 'contribution_problems': str(contribution_problems),
                 'contribution_testcases': str(contribution_testcases),
-                'reputation': str(reputation)
+                'reputation': str(reputation),
+                'star_rating': str(star),
+                'avatar': str(avatar)
             }
 
         url = f'https://leetcode.com/{self.__username}'
@@ -558,7 +558,7 @@ class UserData:
             "variables": {
                 "username": self.__username
             },
-            "query": "query getUserProfile($username: String!) {  allQuestionsCount {    difficulty    count  }  matchedUser(username: $username) {    contributions {    points      questionCount      testcaseCount    }    profile {    reputation      ranking    }    submitStats {      acSubmissionNum {        difficulty        count        submissions      }      totalSubmissionNum {        difficulty        count        submissions      }    }  }}"
+            "query": "query getUserProfile($username: String!) {  allQuestionsCount {    difficulty    count  }  matchedUser(username: $username) {    contributions {    points      questionCount      testcaseCount    }    profile {    reputation      ranking      starRating       userAvatar   }    submitStats {      acSubmissionNum {        difficulty        count        submissions      }      totalSubmissionNum {        difficulty        count        submissions      }    }  }}"
         }
         res = requests.post(url='https://leetcode.com/graphql',
                             json=payload,
